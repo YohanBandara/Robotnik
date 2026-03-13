@@ -1,3 +1,130 @@
+// #include "gyro.h"
+// #include "pins.h"
+// #include "display.h"
+// #include "I2Cdev.h"
+// #include "MPU6050_6Axis_MotionApps20.h"
+// #include <Wire.h>
+
+// //CONFIGURATION
+
+
+// //OBJECTS
+// MPU6050 mpu; // Address 0x68 (AD0 = GND)
+
+// //VARIABLES 
+// bool gyro_ok = false;
+// uint8_t devStatus;      
+// uint16_t packetSize;    
+// uint8_t fifoBuffer[64]; 
+
+// Quaternion q;           
+// float euler[3];         // [psi, theta, phi]
+// float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+
+// // Global storage for the latest values
+// float currentYaw = 0.0; 
+// float currentPitch = 0.0;
+
+// //INTERRUPT ROUTINE
+// volatile bool mpuInterrupt = false;     
+// void dmpDataReady() {
+//     mpuInterrupt = true;
+// }
+
+// //HELPER 
+// float wrap360(float angleDeg) {
+//     while (angleDeg < 0) angleDeg += 360.0;
+//     while (angleDeg >= 360.0) angleDeg -= 360.0;
+//     return angleDeg;
+// }
+
+// void setupGyro() {
+//     Serial.println(F("Initializing MPU6050..."));
+    
+//     // 1. Initialize MPU
+//     mpu.initialize();
+
+//     // 2. Verify Connection
+//     if (!mpu.testConnection()) {
+//         Serial.println(F("MPU6050 connection FAILED"));
+//         gyro_ok = false;
+//         return; 
+//     }
+
+//     // 3. Initialize DMP
+//     Serial.println(F("Initializing DMP..."));
+//     devStatus = mpu.dmpInitialize();
+
+//     // 4. Set Offsets (Run IMU_Zero sketch to get YOUR specific values!)
+//     mpu.setXGyroOffset(220);
+//     mpu.setYGyroOffset(76);
+//     mpu.setZGyroOffset(-85);
+//     mpu.setZAccelOffset(1788); 
+
+//     // 5. Check Success
+//     if (devStatus == 0) {
+//         mpu.CalibrateAccel(6);
+//         mpu.CalibrateGyro(6);
+        
+//         mpu.setDMPEnabled(true);
+
+//         attachInterrupt(digitalPinToInterrupt(GYRO_INTERRUPT_PIN), dmpDataReady, RISING);
+        
+//         packetSize = mpu.dmpGetFIFOPacketSize();
+        
+//         gyro_ok = true;
+//         Serial.println(F("DMP Ready!"));
+//         delay(100);
+//     } else {
+//         Serial.print(F("DMP Init Failed: "));
+//         Serial.println(devStatus);
+//         gyro_ok = false;
+//     }
+// }
+
+// // CRITICAL: This function does the heavy lifting
+// // It reads the I2C, updates Yaw AND Pitch, and returns Yaw.
+// float readGyro() {
+//     if (!gyro_ok) return 0.0;
+
+//     // Check if DMP has data for us
+//     if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) {
+        
+//         // 1. Get Quaternions (Raw math)
+//         mpu.dmpGetQuaternion(&q, fifoBuffer);
+        
+//         // 2. Get Gravity Vector (Needed for accurate Pitch/Roll)
+//         VectorFloat gravity;
+//         mpu.dmpGetGravity(&gravity, &q);
+        
+//         // 3. Calculate Yaw/Pitch/Roll
+//         // ypr[0] = Yaw, ypr[1] = Pitch, ypr[2] = Roll
+//         mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+        
+//         // 4. Convert Radians to Degrees
+//         float yawDeg   = ypr[0] * 180.0 / M_PI;
+//         float pitchDeg = ypr[1] * 180.0 / M_PI;
+        
+//         // 5. Update Globals
+//         currentYaw = wrap360(yawDeg);
+//         currentPitch = pitchDeg;      // No wrap360 needed for pitch, usually -90 to +90
+//     }
+
+//     // return currentYaw;
+// }
+
+
+
+// void flushGyro() {
+//     if (!gyro_ok) return;
+//     for (int i = 0; i < 5; i++) {
+//         // readGyro();
+//         updateGyro();
+//         delay(10);
+//     }
+// }
+
+
 
 
 #include "gyro.h"
@@ -109,16 +236,6 @@ void flushGyro() {
 
 
 
-
-
-
-// #include "gyro.h"
-// #include "display.h"
-
-// #include <Wire.h>
-// #include <Adafruit_Sensor.h>
-// #include <Adafruit_BNO055.h>
-
 // // IMU
 // Adafruit_BNO055 bno=Adafruit_BNO055(55, 0x28, &Wire);
 // // Adafruit_BNO055 bno;
@@ -162,30 +279,3 @@ void flushGyro() {
 
 
 
-
-
-// #include "gyro.h"
-
-// #include <Wire.h>
-// #include <Adafruit_Sensor.h>
-// #include <Adafruit_BNO055.h>
-
-// // IMU
-// Adafruit_BNO055 bno=Adafruit_BNO055(55, 0x29, &Wire);
-// // Adafruit_BNO055 bno;
-// bool imu_ok = false;
-
-// void setupGyro() {
-//   imu_ok = bno.begin();
-//   delay(1000);
-//   if (imu_ok) {
-//     bno.setExtCrystalUse(true);
-//   }
-// }
-
-// float readGyro() {
-//   // if (!imu_ok) return 0;
-//   sensors_event_t orientationData;
-//   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
-//   return orientationData.orientation.x;
-// }

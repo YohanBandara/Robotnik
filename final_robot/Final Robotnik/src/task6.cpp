@@ -4,6 +4,7 @@
 #include"motion.h"
 #include "encoder.h"
 #include "ir.h"
+#include "armServo.h"
 
 void Task6(){
 
@@ -17,27 +18,27 @@ void Task6(){
     stopMotors();delay(500);
     rotateRobot('R',90);delay(500);
 
-    // goDistance().       //here
-    resetPulses();
-    while(distance()<500){        //here
-        runWallFollowerLinear(50,70);delay(10);
-        //hidden task
+    // // goDistance().       //here
+    // resetPulses();
+    // while(distance()<500){        //here
+    //     runWallFollowerLinear(50,70);delay(10);
+    //     //hidden task
 
 
 
-    }
-    stopMotors();
+    // }
+    // stopMotors();
 
 
-    //pendulum
-    int ready=0;
-    while(true){
-        readToF();
-        if (tof_values[2]<200)ready=1;
-        if (tof_values[2]>200 and ready){break;} //here
-    }
-    delay(1000);
-    goDistance(500,200);
+    // //pendulum
+    // int ready=0;
+    // while(true){
+    //     readToF();
+    //     if (tof_values[2]<200)ready=1;
+    //     if (tof_values[2]>200 and ready){break;} //here
+    // }
+    // delay(1000);
+    // goDistance(500,200);
     
 
     while(!isWhiteLine()){runWallFollowerLinear(50,70);delay(10);}
@@ -46,6 +47,8 @@ void Task6(){
 
 
     //ball shooter
+    boxHorizontalOpen();
+    shoot();
 
 
 }

@@ -16,7 +16,7 @@ void setupPins(){
 
     for (int i = 0; i < 8; i++) {
         pinMode(IRSensorPinsDigital[i], INPUT);
-        pinMode(IRSensorPinsAnalog[i], INPUT);
+        // pinMode(IRSensorPinsAnalog[i], INPUT);
     }
 
     pinMode(XSHUT_1, OUTPUT);
@@ -41,5 +41,14 @@ void setupPins(){
     pinMode(COLOR2_OUT, INPUT);
 
     pinMode(GYRO_INTERRUPT_PIN, INPUT);
+
+
+    pinMode(IRSensorPinLeft,INPUT);
+    pinMode(IRSensorPinRight,INPUT);
+
+    pinMode(BTN_UP,    INPUT_PULLUP);
+    pinMode(BTN_DOWN,  INPUT_PULLUP);
+    pinMode(BTN_START, INPUT_PULLUP);
+    pinMode(BTN_STOP,  INPUT_PULLUP);
 
 }

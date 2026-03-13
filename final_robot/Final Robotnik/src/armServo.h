@@ -4,6 +4,12 @@
 // #include <Servo.h>
 
 void setupServo();
+void boxHorizontalOpen();
+void boxHorizontalClose();
+void boxVerticalUp();
+void boxVerticalDown();
+
+
 void getBox();
 void releaseBox();
 void grabBox();
@@ -20,5 +26,6 @@ void runBallPicker();
 void pickBall();
 void endBallPicker();
 
+void shoot();
 
 #endif

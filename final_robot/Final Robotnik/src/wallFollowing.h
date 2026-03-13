@@ -13,35 +13,3 @@ void runWallFollowerOuter(int targetDistance = 50,int baseSpeed=70,int outerOffs
 
 
 
-
-
-
-
-
-
-// #ifndef WALL_FOLLOWING_H
-// #define WALL_FOLLOWING_H
-// #include <Arduino.h>
-
-// void initWallFollower();
-// void runWallFollower(int targetDistance = 50, char direction='R', String status ="linear");
-// void runWallFollowerLinear( int targetDistance = 50,int baseSpeed=100,int tolarance=50, float wall_Kp=3, float wall_Kd=0.2, float wall_Kp_angle=8);
-// void runWallFollowerInner(int targetDistance = 50,int baseSpeed=70,int innerOffset=60,int tolarance=50, float wall_Kp=3, float wall_Kd=0.2, float wall_Kp_angle=8);
-// void runWallFollowerOuter(int targetDistance = 50,int baseSpeed=70,int outerOffset=40,int tolarance=50, float wall_Kp=3, float wall_Kd=0.2, float wall_Kp_angle=8);
-
-// #endif
-
-
-
-
-
-
-
-
-
-// #ifndef WALL_FOLLOWING_H
-// #define WALL_FOLLOWING_H
-// #include <Arduino.h>
-
-// void runWallFollower();
-// #endif

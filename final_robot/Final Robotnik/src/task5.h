@@ -4,5 +4,7 @@
 #include <Arduino.h>
 
 void Task5();
+void Task5Mo();
+
 
 #endif
