@@ -4,6 +4,7 @@
 #include "tof.h"
 #include "armServo.h"
 #include "color.h"
+#include "display.h"
 
 int robotX = 0;
 int robotY = 0;
@@ -44,7 +45,7 @@ void turnTo(int targetDirection) {
     if (facing == targetDirection) return;
     int diff = targetDirection - facing;
     if (diff == 1 || diff == -3) rotateRobot('R', 90);
-    else if (diff == 2 || diff == -2) rotateRobot('R', 180);
+    else if (diff == 2 || diff == -2) rotateRobot('L', 180);
     else if (diff == 3 || diff == -1) rotateRobot('L', 90);
     facing = targetDirection;
 }
@@ -52,7 +53,7 @@ void turnTo(int targetDirection) {
 
 void move() {
     nodeTraversal(70,70); 
-    //goDistance(30,70); // Center on node
+    //goDistance(70,70); // Center on node
     
     if (facing == NORTH) robotY++;
     else if (facing == EAST)  robotX++;
@@ -62,7 +63,7 @@ void move() {
     // Mark map
     // gridMap[robotX][robotY] = 1; 
     
-    Serial.print("Moved to: "); Serial.print(robotX); Serial.print(","); Serial.println(robotY);
+    // Serial.print("Moved to: "); Serial.print(robotX); Serial.print(","); Serial.println(robotY);
 }
 
 
@@ -243,6 +244,7 @@ int RightLineCheck(){
                 turnTo(EAST);
                 while (robotX<8)move();
                 turnTo(NORTH);
+                return 0;
             }
         }
     }
@@ -274,8 +276,8 @@ int leftSteps(){
             turnTo(NORTH);
             if (deliverBox())return 1;
             else {while(robotY<prev_robotY)move();return 0;}
-        move();
         }
+        move();
     }
 }
 
@@ -320,7 +322,7 @@ int RightSteps(){
 
 
 void getOffTask1(){
-    turnTo(EAST);
+    turnTo(WEST);
     goDistance(250);
     rotateRobot('R',90);
 }
@@ -344,7 +346,7 @@ int Task1(){
     move();
 
     for (int i=1; i<8; i++){
-        if(leftSteps()==1){getOffTask1(); return(6-prev_color-next_color);}
+        if(RightSteps()==1){getOffTask1(); return(6-prev_color-next_color);}
         move();
     }
 
@@ -352,4 +354,6 @@ int Task1(){
    return(6-prev_color-next_color);
 
 }
+
+
 
